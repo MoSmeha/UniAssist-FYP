@@ -1,0 +1,151 @@
+/* styles.css */
+
+/* General Styles */
+.sidebar {
+  background-color: #112017;
+  border-right: 1px solid #64748b; /* slate-500 */
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Search Input Styles */
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #e2e8f0; /* input-bordered */
+  border-radius: 9999px; /* rounded-full */
+}
+
+.search-button {
+  padding: 0.5rem;
+  background-color: #ff2a1b; /* bg-sky-500 */
+  color: white;
+  border: none;
+  border-radius: 9999px; /* btn-circle */
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #c4180c; /* hover:bg-sky-600 */
+}
+
+/* Conversations Styles */
+.conversations-container {
+  padding-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.conversation-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.3rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin: 0.5rem 0rem;
+}
+
+.conversation-item:hover {
+  background-color: #ffffff;
+  /* hover:bg-sky-500 */
+}
+
+.conversation-item.selected {
+  background-color: #ffffff;
+  /* bg-sky-500 */
+}
+
+.avatar {
+  position: relative;
+}
+
+.avatar.online::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background-color: #0787ff; /* online indicator */
+  border-radius: 50%;
+}
+
+.avatar-image {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+}
+
+.conversation-details {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.conversation-name {
+  font-weight: bold;
+  color: #e2e8f0;
+  /* text-gray-200 */
+}
+.conversation-name.selected-name {
+  color: #ff2a1b !important;
+}
+/* Loading Spinner Styles */
+.loading-spinner {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid #e2e8f0;
+  border-top: 2px solid #ff2a1b; /* sky-500 */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Logout Button Styles */
+.logout-button {
+  margin-top: auto;
+}
+
+.logout-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+.logout-icon:hover {
+  color: #ff2a1b; /* hover:text-sky-500 */
+}
+
+.divider {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: stretch;
+  margin-top: 1rem;
+
+  height: 1rem;
+  white-space: nowrap;
+}
+.converstation-person {
+  display: flex;
+  align-items: center;
+}

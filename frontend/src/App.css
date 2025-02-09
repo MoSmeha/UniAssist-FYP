@@ -1,0 +1,33 @@
+body::before {
+  display: flex;
+  align-items: center !important;
+  justify-content: center;
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../public/Cedar_Wp.jpg") no-repeat center center/cover;
+  filter: blur(8px);
+}
+#root {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Caveat", serif !important;
+  font-size: larger;
+}
+::placeholder {
+  font-family: "Caveat", serif !important;
+}

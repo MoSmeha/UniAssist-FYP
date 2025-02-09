@@ -1,0 +1,19 @@
+.home-container {
+  justify-content: center;
+  display: flex;
+  height: 450px;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .home-container {
+    height: 450px; /* sm:h-[450px] */
+  }
+}
+
+@media (min-width: 768px) {
+  .home-container {
+    height: 550px; /* md:h-[550px] */
+  }
+}
