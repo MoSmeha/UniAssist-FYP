@@ -44,12 +44,12 @@ JWT_SECRET= ...
 NODE_ENV= ...
 ```
 
-3. **build and start the app **
+3. **build and start the app**
 
 ```bash
 npm run build
 npm run start
 ```
 
-4. ** Note **
+4. **Note**
    Also change the url in the socketManager.jsx file to match that of your backend port
