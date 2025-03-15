@@ -11,6 +11,7 @@ import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import ScheduleTable from "./pages/Schedule/ScheduleComponent";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import LogoutPage from "./LogoutPage";
+
 import TODO from "./TodoList";
 import ConstructionIcon from "@mui/icons-material/Construction";
 import LayersIcon from "@mui/icons-material/Layers";
@@ -62,11 +63,6 @@ const NAVIGATION = [
         title: "checkList",
         icon: <ChecklistIcon />,
       },
-      {
-        segment: "traffic",
-        title: "Traffic",
-        icon: <DescriptionIcon />,
-      },
     ],
   },
   {
@@ -84,7 +80,7 @@ const NAVIGATION = [
   {
     segment: "Logout",
     title: "Logout",
-    icon: <LogoutIcon />, // Use a proper component
+    icon: <LogoutIcon />,
   },
 ];
 
@@ -104,6 +100,14 @@ const demoTheme = createTheme({
   },
 });
 
+const routes = {
+  "/Chat": <ChatApp />,
+  "/Logout": <LogoutPage />,
+  "/staffList": <StaffList />,
+  "/Schedule": <ScheduleTable />,
+  "/tools/checkList": <TODO />,
+};
+
 function DemoPageContent({ pathname }) {
   return (
     <Box
@@ -115,22 +119,13 @@ function DemoPageContent({ pathname }) {
         textAlign: "center",
       }}
     >
-      {pathname === "/Chat" ? (
-        <ChatApp />
-      ) : pathname === "/Logout" ? (
-        <LogoutPage />
-      ) : pathname === "/staffList" ? (
-        <StaffList />
-      ) : pathname === "/Schedule" ? (
-        <ScheduleTable />
-      ) : pathname === "/tools/checkList" ? (
-        <TODO />
-      ) : (
+      {routes[pathname] || (
         <Typography>Dashboard content for {pathname}</Typography>
       )}
     </Box>
   );
 }
+
 DemoPageContent.propTypes = {
   pathname: PropTypes.string.isRequired,
 };
@@ -147,6 +142,21 @@ function DashboardLayoutBasic(props) {
     // preview-start
     <AppProvider
       navigation={NAVIGATION}
+      branding={{
+        logo: (
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuWGq9FqPVwCUcNC30i5iPXnaNKGWGruCs5Q&s"
+            alt="UniAssist"
+            style={{
+              width: "40px", // Adjust size as needed
+              height: "40px",
+              borderRadius: "50%", // Makes it circular
+              objectFit: "cover", // Ensures the image is properly cropped inside the circle
+            }}
+          />
+        ),
+        title: "UniAssist",
+      }}
       router={router}
       theme={demoTheme}
       window={demoWindow}
