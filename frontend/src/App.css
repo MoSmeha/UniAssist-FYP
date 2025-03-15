@@ -1,4 +1,4 @@
-body::before {
+/* body::before {
   display: flex;
   align-items: center !important;
   justify-content: center;
@@ -12,22 +12,17 @@ body::before {
     url("../public/Cedar_Wp.jpg") no-repeat center center/cover;
   filter: blur(8px);
 }
+  */
 #root {
   margin: 0;
   padding: 0;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
 }
+
 body {
-  margin: 0;
-  padding: 0;
-  font-family: "Caveat", serif !important;
-  font-size: larger;
+  margin: 0 !important;
+  padding: 0 !important;
 }
-::placeholder {
-  font-family: "Caveat", serif !important;
+.css-197urd {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }

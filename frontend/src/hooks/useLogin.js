@@ -6,15 +6,15 @@ const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const { setAuthUser } = useAuthStore();
 
-  const login = async (username, password) => {
-    const success = handleInputErrors(username, password);
+  const login = async (uniId, password) => {
+    const success = handleInputErrors(uniId, password);
     if (!success) return;
     setLoading(true);
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ uniId, password }),
       });
 
       const data = await res.json();
@@ -35,8 +35,8 @@ const useLogin = () => {
 };
 export default useLogin;
 
-function handleInputErrors(username, password) {
-  if (!username || !password) {
+function handleInputErrors(uniId, password) {
+  if (!uniId || !password) {
     toast.error("Please fill in all fields");
     return false;
   }

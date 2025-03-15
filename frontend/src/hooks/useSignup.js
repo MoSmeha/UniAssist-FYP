@@ -7,18 +7,30 @@ const useSignup = () => {
   const { setAuthUser } = useAuthStore();
 
   const signup = async ({
-    fullName,
-    username,
+    uniId,
+    firstName,
+    lastName,
+    email,
     password,
     confirmPassword,
     gender,
+    role,
+    Department,
+    title,
+    schedule,
   }) => {
     const success = handleInputErrors({
-      fullName,
-      username,
+      uniId,
+      firstName,
+      lastName,
+      email,
       password,
       confirmPassword,
       gender,
+      role,
+      Department,
+      title,
+      schedule,
     });
     if (!success) return;
 
@@ -28,11 +40,17 @@ const useSignup = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          fullName,
-          username,
+          uniId,
+          firstName,
+          lastName,
+          email,
           password,
           confirmPassword,
           gender,
+          role,
+          Department,
+          title,
+          schedule,
         }),
       });
 
@@ -51,16 +69,34 @@ const useSignup = () => {
 
   return { loading, signup };
 };
+
 export default useSignup;
 
 function handleInputErrors({
-  fullName,
-  username,
+  uniId,
+  firstName,
+  lastName,
+  email,
   password,
   confirmPassword,
   gender,
+  role,
+  Department,
+  title,
+  schedule,
 }) {
-  if (!fullName || !username || !password || !confirmPassword || !gender) {
+  if (
+    !uniId ||
+    !firstName ||
+    !lastName ||
+    !email ||
+    !password ||
+    !confirmPassword ||
+    !gender ||
+    !role ||
+    !Department ||
+    !title
+  ) {
     toast.error("Please fill in all fields");
     return false;
   }
@@ -73,6 +109,38 @@ function handleInputErrors({
   if (password.length < 6) {
     toast.error("Password must be at least 6 characters");
     return false;
+  }
+
+  // Validate email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    toast.error("Please enter a valid email address");
+    return false;
+  }
+
+  // Schedule validation
+  if (!schedule || schedule.length === 0) {
+    toast.error("Please add at least one schedule entry");
+    return false;
+  }
+
+  // Validate each schedule entry
+  for (const entry of schedule) {
+    if (!entry.subject || entry.subject.trim() === "") {
+      toast.error("All schedule entries must have a subject");
+      return false;
+    }
+
+    if (entry.mode === "campus" && (!entry.room || entry.room.trim() === "")) {
+      toast.error("Please specify a room for campus classes");
+      return false;
+    }
+
+    // Validate time format (assuming time is already formatted as string)
+    if (!entry.startTime || !entry.endTime) {
+      toast.error("All schedule entries must have start and end times");
+      return false;
+    }
   }
 
   return true;

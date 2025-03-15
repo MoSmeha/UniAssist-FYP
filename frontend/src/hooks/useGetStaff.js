@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-const useGetConversations = () => {
+const useGetStaff = () => {
   const [loading, setLoading] = useState(false);
-  const [conversations, setConversations] = useState([]);
+  const [staff, setStaff] = useState([]);
 
   useEffect(() => {
-    const getConversations = async () => {
+    const getStaff = async () => {
       setLoading(true);
       try {
         const res = await fetch("/api/users");
@@ -14,7 +14,10 @@ const useGetConversations = () => {
         if (data.error) {
           throw new Error(data.error);
         }
-        setConversations(data);
+        // Filter staff members
+        const staffRoles = ["teacher", "admin"];
+        const staffOnly = data.filter((user) => staffRoles.includes(user.role));
+        setStaff(staffOnly);
       } catch (error) {
         toast.error(error.message);
       } finally {
@@ -22,9 +25,10 @@ const useGetConversations = () => {
       }
     };
 
-    getConversations();
+    getStaff();
   }, []);
 
-  return { loading, conversations };
+  return { loading, staff };
 };
-export default useGetConversations;
+
+export default useGetStaff;

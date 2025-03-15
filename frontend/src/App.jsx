@@ -1,20 +1,28 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Home from "./pages/home/Home";
+
 import Login from "./pages/login/Login";
 import SignUp from "./pages/signup/SignUp";
 import { Toaster } from "react-hot-toast";
-
+import DashboardLayoutBasic from "./Dashboard";
 import { useAuthStore } from "./zustand/AuthStore";
 
 function App() {
-  const authUser = useAuthStore((state) => state.authUser);
+  const { authUser, loading } = useAuthStore();
+
+  console.log("authUser on render:", authUser);
   return (
     <>
       <Routes>
         <Route
           path="/"
-          element={authUser ? <Home /> : <Navigate to={"/login"} />}
+          element={
+            authUser ? (
+              <DashboardLayoutBasic />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
         />
         <Route
           path="/login"

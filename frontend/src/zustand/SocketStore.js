@@ -1,5 +1,5 @@
 import { create } from "zustand";
-
+// componnet la ybayen min l online in real time
 export const useSocketStore = create((set) => ({
   socket: null,
   onlineUsers: [],

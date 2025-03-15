@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import useLogin from "../../hooks/useLogin";
-import "./Login.css"; // Import the CSS file
+// import "./Login.css";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [uniId, setuniId] = useState("");
   const [password, setPassword] = useState("");
 
   const { loading, login } = useLogin();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login(username, password);
+    await login(uniId, password);
   };
 
   return (
@@ -24,14 +24,14 @@ const Login = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <label className="label">
-            <span className="label-text">Username</span>
+            <span className="label-text">uniId</span>
           </label>
           <input
             type="text"
-            placeholder="Enter username"
+            placeholder="Enter uniId"
             className="input"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={uniId}
+            onChange={(e) => setuniId(e.target.value)}
           />
         </div>
 
