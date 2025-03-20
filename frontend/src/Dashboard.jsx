@@ -5,20 +5,25 @@ import { createTheme } from "@mui/material/styles";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ChatIcon from "@mui/icons-material/Chat";
 import ChecklistIcon from "@mui/icons-material/Checklist";
-import DescriptionIcon from "@mui/icons-material/Description";
 import LogoutIcon from "@mui/icons-material/Logout";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
-import ScheduleTable from "./pages/Schedule/ScheduleComponent";
 import DateRangeIcon from "@mui/icons-material/DateRange";
-import LogoutPage from "./LogoutPage";
-
-import TODO from "./TodoList";
 import ConstructionIcon from "@mui/icons-material/Construction";
 import LayersIcon from "@mui/icons-material/Layers";
-import ChatApp from "./pages/ChatApp/ChatApp";
+import Stack from "@mui/material/Stack";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import * as React from "react";
+import { AccountPreview } from "@toolpad/core/Account";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { useDemoRouter } from "@toolpad/core/internal";
+import { useAuthStore } from "./zustand/AuthStore";
+import useLogout from "./hooks/useLogout";
+import ChatApp from "./pages/ChatApp/ChatApp";
+import LogoutPage from "./LogoutPage";
+import ScheduleTable from "./pages/Schedule/ScheduleComponent";
+import TODO from "./TodoList";
 import StaffList from "./pages/StaffInfo/StaffList";
 
 const NAVIGATION = [
@@ -130,16 +135,92 @@ DemoPageContent.propTypes = {
   pathname: PropTypes.string.isRequired,
 };
 
-function DashboardLayoutBasic(props) {
-  const { window } = props;
-
-  const router = useDemoRouter("/dashboard");
-
-  // Remove this const when copying and pasting into your project.
-  const demoWindow = window !== undefined ? window() : undefined;
+function SidebarFooterProfile({ mini }) {
+  const { logout, loading } = useLogout();
 
   return (
-    // preview-start
+    <Stack direction="column" p={0}>
+      <Divider />
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          // transition: "all 225ms cubic-bezier(0.4, 0, 0.2, 1)",
+          overflow: "hidden",
+          "& .MuiAvatar-root": {
+            transition: "all 225ms cubic-bezier(0.4, 0, 0.2, 1)",
+          },
+          "& .MuiTypography-root": {
+            transition: "opacity 225ms cubic-bezier(0.4, 0, 0.2, 1)",
+          },
+        }}
+      >
+        <Box flexGrow={1}>
+          <AccountPreview variant={mini ? "condensed" : "expanded"} />
+        </Box>
+        {!mini && (
+          <IconButton
+            aria-label="logout"
+            onClick={logout}
+            disabled={loading}
+            sx={{
+              mr: 1,
+              color: "text.secondary",
+              "&:hover": {
+                color: "error.main",
+              },
+
+              // Add fade-in effect
+              opacity: 1,
+            }}
+          >
+            <LogoutIcon />
+          </IconButton>
+        )}
+      </Box>
+    </Stack>
+  );
+}
+
+SidebarFooterProfile.propTypes = {
+  mini: PropTypes.bool.isRequired,
+};
+
+function DashboardLayoutBasic(props) {
+  const { window } = props;
+  const router = useDemoRouter("/dashboard");
+  const demoWindow = window !== undefined ? window() : undefined;
+
+  // Get the authenticated user from your Zustand store
+  const authUser = useAuthStore((state) => state.authUser);
+
+  // Create a session object using the real user data
+  const userSession = authUser
+    ? {
+        user: {
+          name: authUser.firstName + " " + authUser.lastName || "Guest User",
+          email: authUser.email || "guest@example.com",
+          image: authUser.profilePic || "https://via.placeholder.com/40", // Fallback image
+        },
+      }
+    : {
+        // Fallback user if authUser is null
+        user: {
+          name: "Guest User",
+          email: "guest@example.com",
+          image: "https://via.placeholder.com/40",
+        },
+      };
+
+  // React to auth changes
+  React.useEffect(() => {
+    // You could add additional logic here if needed
+    if (!authUser && router.pathname !== "/login") {
+      console.log("User not authenticated");
+    }
+  }, [authUser, router]);
+
+  return (
     <AppProvider
       navigation={NAVIGATION}
       branding={{
@@ -148,10 +229,10 @@ function DashboardLayoutBasic(props) {
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuWGq9FqPVwCUcNC30i5iPXnaNKGWGruCs5Q&s"
             alt="UniAssist"
             style={{
-              width: "40px", // Adjust size as needed
+              width: "40px",
               height: "40px",
-              borderRadius: "50%", // Makes it circular
-              objectFit: "cover", // Ensures the image is properly cropped inside the circle
+              borderRadius: "50%",
+              objectFit: "cover",
             }}
           />
         ),
@@ -160,20 +241,20 @@ function DashboardLayoutBasic(props) {
       router={router}
       theme={demoTheme}
       window={demoWindow}
+      session={userSession}
     >
-      <DashboardLayout>
+      <DashboardLayout
+        slots={{
+          sidebarFooter: SidebarFooterProfile,
+        }}
+      >
         <DemoPageContent pathname={router.pathname} />
       </DashboardLayout>
     </AppProvider>
-    // preview-end
   );
 }
 
 DashboardLayoutBasic.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * Remove this when copying and pasting into your project.
-   */
   window: PropTypes.func,
 };
 

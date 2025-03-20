@@ -38,7 +38,14 @@ export const signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Generate profile picture using user's name and random color
-    const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+    function getLightColor() {
+      const r = Math.floor(Math.random() * 106) + 150; // 150-255
+      const g = Math.floor(Math.random() * 106) + 150; // 150-255
+      const b = Math.floor(Math.random() * 106) + 150; // 150-255
+      return ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1); // Convert to hex
+    }
+
+    const randomColor = getLightColor();
     const profilePic = `https://ui-avatars.com/api/?name=${firstName}+${lastName}&background=${randomColor}`;
 
     // Create a new user

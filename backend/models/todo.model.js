@@ -13,6 +13,11 @@ const TodoSchema = new mongoose.Schema(
       required: [true, "Title is required"],
       trim: true,
     },
+    priority: {
+      type: String,
+      required: true,
+      enum: ["Top", "Moderate", "Low"],
+    },
     description: {
       type: String,
       trim: true,
