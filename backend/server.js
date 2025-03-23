@@ -9,6 +9,8 @@ import userRoutes from "./routes/user.routes.js";
 import scheduleRoutes from "./routes/schedule.routes.js";
 import connectToMongoDB from "./db/connectToMongoDB.js";
 import todoRoutes from "./routes/todo.routes.js";
+import annonncementRoutes from "./routes/announcements.routes.js";
+
 import { app, server } from "./socket/socket.js";
 
 dotenv.config();
@@ -24,6 +26,8 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/sch", scheduleRoutes);
 app.use("/api/todo", todoRoutes);
+app.use("/api/announcements", annonncementRoutes);
+
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
 app.get("*", (req, res) => {

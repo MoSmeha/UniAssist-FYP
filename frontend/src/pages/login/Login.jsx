@@ -69,11 +69,7 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Box sx={{ mt: 1, textAlign: "right" }}>
-          <Link component={RouterLink} to="/signup">
-            Don't have an account?
-          </Link>
-        </Box>
+
         <Button
           type="submit"
           variant="contained"

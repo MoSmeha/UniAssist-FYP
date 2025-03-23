@@ -7,95 +7,67 @@ const ScheduleSchema = new mongoose.Schema({
     required: true,
   },
   subject: { type: String, required: true },
-  startTime: { type: String, required: true }, // Example: "09:00 AM"
-  endTime: { type: String, required: true }, // Example: "10:30 AM"
+  startTime: { type: String, required: true }, // e.g., "09:00 AM"
+  endTime: { type: String, required: true }, // e.g., "10:30 AM"
   mode: {
     type: String,
     enum: ["campus", "online"],
     required: true,
   },
-  room: {
-    type: String,
-    required: true,
-  },
+  room: { type: String, required: true },
 });
 
-const userSchema = new mongoose.Schema(
+const options = { discriminatorKey: "role", timestamps: true };
+
+const UserSchema = new mongoose.Schema(
   {
-    uniId: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-      minlength: 8, // Increase from 6
-      select: false, // Never return in queries
-    },
-    gender: {
-      type: String,
-      required: true,
-      enum: ["male", "female"],
-    },
-    profilePic: {
-      type: String,
-      default: "",
-    },
-    role: {
-      type: String,
-      enum: ["student", "teacher", "admin"],
-      required: true,
-    },
+    uniId: { type: String, required: true, unique: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true, minlength: 8, select: false },
+    gender: { type: String, required: true, enum: ["male", "female"] },
+    profilePic: { type: String, default: "" },
     Department: {
       type: String,
       required: true,
       enum: [
         "Computer and Communications Engineering",
-        "Technology in Computer Science",
-        "Human Resource Management",
-        "Economics",
-        "Accounting, Control, and Auditing",
-        "Banking and Finance",
-        "Marketing and Management",
-        "Nursing Sciences",
-        "Dental Laboratory Technology",
-        "Physical Therapy",
-        "Communication and Journalism",
-        "Audiovisual",
-        "Graphic Design and Advertising",
-        "Music Therapy",
-        "European Art Music",
-        "General Musicology of Traditions and Arabic Art Music",
-        "Music Education Sciences and Music, Technology, and Media",
-        "Motricity Education and Adapted Physical Activities",
-        "Sports Training",
-        "Sports Management",
+        "Business",
+        "Sports Sciences",
+        "Public Health",
       ],
-    },
-    title: {
-      type: String,
-      required: true,
-      unique: true,
     },
     schedule: [ScheduleSchema],
   },
-  { timestamps: true }
+  options
 );
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model("User", UserSchema);
 
-export default User;
+const TeacherSchema = new mongoose.Schema({
+  title: { type: String, required: true }, // e.g., "Head of Engineering"
+  coursesTaught: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
+});
+
+const Teacher = User.discriminator("teacher", TeacherSchema);
+
+const StudentSchema = new mongoose.Schema({
+  major: {
+    type: String,
+    required: true,
+    enum: [
+      "Computer Science",
+      "Computer Engineering",
+      "Accounting",
+      "Sports Training",
+      "Dental Lab",
+    ],
+  },
+  department: { type: mongoose.Schema.Types.ObjectId, ref: "Department" },
+  coursesEnrolled: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
+});
+
+const Student = User.discriminator("student", StudentSchema);
+
+export { User, Teacher, Student };

@@ -1,4 +1,4 @@
-import User from "../models/user.model.js"; // Note the .js extension
+import { User } from "../models/user.model.js"; // Note the .js extension
 
 export const getUserSchedule = async (req, res) => {
   try {

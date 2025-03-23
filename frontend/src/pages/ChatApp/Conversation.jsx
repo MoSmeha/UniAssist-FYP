@@ -1,26 +1,23 @@
 import {
-  ListItem,
   ListItemAvatar,
   Avatar,
   ListItemText,
   Badge,
   Divider,
   Typography,
+  ListItemButton,
 } from "@mui/material";
 import { useSocketStore } from "../../zustand/SocketStore";
-import useConversation from "../../zustand/useConversation"; // Import Zustand store
+import useConversation from "../../zustand/useConversation";
 
 const Conversation = ({ conversation, lastIdx }) => {
-  // console.log(conversation);
-  const { setSelectedConversation } = useConversation(); // Zustand function
-  const onlineUsers = useSocketStore((state) => state.onlineUsers); // Get online users
-  const isOnline = onlineUsers.includes(conversation._id); // Check if user is online
+  const { setSelectedConversation } = useConversation();
+  const onlineUsers = useSocketStore((state) => state.onlineUsers);
+  const isOnline = onlineUsers.includes(conversation._id);
 
   return (
     <>
-      <ListItem button onClick={() => setSelectedConversation(conversation)}>
-        {" "}
-        {/* Use Zustand setter */}
+      <ListItemButton onClick={() => setSelectedConversation(conversation)}>
         <ListItemAvatar>
           <Badge
             color="success"
@@ -49,7 +46,7 @@ const Conversation = ({ conversation, lastIdx }) => {
             </Typography>
           }
         />
-      </ListItem>
+      </ListItemButton>
       {!lastIdx && <Divider variant="inset" component="li" />}
     </>
   );

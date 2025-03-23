@@ -10,7 +10,7 @@ const TodoSchema = new mongoose.Schema(
     },
     title: {
       type: String,
-      required: [true, "Title is required"],
+      required: true,
       trim: true,
     },
     priority: {
@@ -24,7 +24,7 @@ const TodoSchema = new mongoose.Schema(
     },
     date: {
       type: Date,
-      required: [true, "Date is required"],
+      required: true,
       default: Date.now,
     },
     startTime: {
