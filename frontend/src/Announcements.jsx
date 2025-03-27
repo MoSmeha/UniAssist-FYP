@@ -3,9 +3,6 @@ import {
   Container,
   Typography,
   Button,
-  List,
-  ListItem,
-  ListItemText,
   CircularProgress,
   AppBar,
   Toolbar,
@@ -14,10 +11,16 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  Avatar,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Divider,
 } from "@mui/material";
-import { useAuthStore } from "./zustand/AuthStore";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CloseIcon from "@mui/icons-material/Close";
 import CreateAnnouncement from "./CreateAnnouncement";
+import { useAuthStore } from "./zustand/AuthStore";
 import toast from "react-hot-toast";
 
 const Announcements = () => {
@@ -67,13 +70,34 @@ const Announcements = () => {
     fetchAnnouncements();
   };
 
+  // Helper function to format ISO date to dd/mm/yyyy
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  };
+
   return (
     <>
       {/* Top Bar */}
-      <AppBar position="static" color="primary" elevation={0}>
-        <Toolbar>
-          <Typography component="span" variant="h6" sx={{ flexGrow: 1 }}>
-            Announcements
+      <AppBar
+        position="static"
+        color="primary"
+        elevation={3} // Adds shadow
+        sx={{
+          mb: 3,
+          // Adds margin bottom
+          padding: { xs: 1, sm: 1 }, // Responsive padding
+        }}
+      >
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Typography
+            component="span"
+            variant="h5"
+            sx={{ fontSize: { xs: "1.2rem", sm: "1.5rem" } }} // Responsive font size
+          >
+            {authUser.role === "student"
+              ? "Announcements:"
+              : "Your Announcements"}
           </Typography>
           {authUser.role === "teacher" && (
             <Button
@@ -88,13 +112,7 @@ const Announcements = () => {
       </AppBar>
 
       {/* Main Content */}
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Typography component="span" variant="h4" gutterBottom>
-          {authUser.role === "student"
-            ? "Announcements For You"
-            : "Your Announcements"}
-        </Typography>
-
+      <Container maxWidth="lg" sx={{ mb: 4 }}>
         {loading ? (
           <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
             <CircularProgress />
@@ -111,40 +129,59 @@ const Announcements = () => {
               : "You haven't created any announcements yet"}
           </Typography>
         ) : (
-          <List sx={{ bgcolor: "background.paper", borderRadius: 1 }}>
-            {announcements.map((announcement) => (
-              <ListItem key={announcement._id} divider>
-                <ListItemText
-                  primary={
-                    <Typography component="span" variant="h6">
+          announcements.map((announcement) => (
+            <Accordion key={announcement._id}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Box display="flex" alignItems="center" width="100%">
+                  {/* Avatar */}
+                  <Avatar
+                    src={announcement.sender.profilePic}
+                    alt={announcement.sender.firstName}
+                    sx={{ mr: 2 }}
+                  />
+
+                  {/* Sender Name & Target Subject */}
+                  <Box flexGrow={1}>
+                    <Typography variant="subtitle1">
+                      {announcement.sender.firstName}{" "}
+                      {announcement.sender.lastName}{" "}
+                      <Typography
+                        component="span"
+                        variant="subtitle2"
+                        color="textSecondary"
+                      >
+                        to{" "}
+                        {announcement.announcementType === "subject"
+                          ? announcement.targetSubject
+                          : announcement.targetMajor}
+                      </Typography>
+                    </Typography>
+
+                    <Typography variant="body2" color="textSecondary">
                       {announcement.title}
                     </Typography>
-                  }
-                  secondary={
-                    <>
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        sx={{ mt: 1 }}
-                      >
-                        {announcement.content}
-                      </Typography>
-                      <Typography
-                        component="span"
-                        variant="caption"
-                        color="textSecondary"
-                        sx={{ mt: 1 }}
-                      >
-                        {announcement.announcementType === "major"
-                          ? `For ${announcement.targetMajor} major`
-                          : `For ${announcement.targetSubject} subject`}
-                      </Typography>
-                    </>
-                  }
-                />
-              </ListItem>
-            ))}
-          </List>
+                  </Box>
+
+                  {/* Date on the Right */}
+                  <Typography variant="body2" color="textSecondary">
+                    {formatDate(announcement.createdAt)}
+                  </Typography>
+                </Box>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography textAlign={"left"} variant="body2" paragraph>
+                  {announcement.content}
+                </Typography>
+                <Divider />
+                <Box textAlign={"left"} mt={2}>
+                  <Typography variant="caption" color="textSecondary">
+                    {announcement.sender.title} -{" "}
+                    {announcement.sender.Department}
+                  </Typography>
+                </Box>
+              </AccordionDetails>
+            </Accordion>
+          ))
         )}
       </Container>
 

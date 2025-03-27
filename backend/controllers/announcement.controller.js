@@ -71,7 +71,10 @@ export const getAnnouncementsForStudent = async (req, res) => {
           targetSubject: { $in: studentSubjects },
         },
       ],
-    }).populate("sender", "firstName lastName profilePic Department title");
+    }).populate(
+      "sender",
+      "firstName lastName profilePic Department title createdAt"
+    );
 
     res.status(200).json({
       success: true,
@@ -92,9 +95,12 @@ export const getTeacherAnnouncements = async (req, res) => {
   try {
     const teacherId = req.user.id; // Assuming authentication middleware
 
-    const announcements = await Announcement.find({ sender: teacherId }).sort({
-      createdAt: -1,
-    });
+    const announcements = await Announcement.find({ sender: teacherId })
+      .sort({ createdAt: -1 })
+      .populate(
+        "sender",
+        "firstName lastName profilePic Department title createdAt"
+      );
 
     res.status(200).json({
       success: true,

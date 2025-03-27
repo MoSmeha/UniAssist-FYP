@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import { Majors, Subjects } from "./Constants.js";
 const AnnouncementSchema = new mongoose.Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
@@ -15,19 +15,14 @@ const AnnouncementSchema = new mongoose.Schema({
   },
   targetMajor: {
     type: String,
-    enum: [
-      "Computer Science",
-      "Computer Engineering",
-      "Accounting",
-      "Sports Training",
-      "Dental Lab",
-    ],
+    enum: Majors,
     required: function () {
       return this.announcementType === "major";
     },
   },
   targetSubject: {
     type: String,
+    enum: Subjects,
     required: function () {
       return this.announcementType === "subject";
     },

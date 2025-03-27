@@ -24,7 +24,7 @@ const StaffCard = ({ staffMember, lastIdx }) => {
           secondary={
             <>
               <Typography
-                component={"span"}
+                component={"div"}
                 variant="body2"
                 color="text.secondary"
                 sx={{ fontSize: "0.75rem" }}

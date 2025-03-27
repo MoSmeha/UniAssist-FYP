@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -12,26 +12,6 @@ import {
 import { useAuthStore } from "./zustand/AuthStore";
 import toast from "react-hot-toast";
 
-const MAJORS = [
-  "Computer Science",
-  "Computer Engineering",
-  "Accounting",
-  "Sports Training",
-  "Dental Lab",
-];
-
-const SUBJECTS = [
-  "Introduction to Programming",
-  "Data Structures",
-  "Web Development",
-  "Database Systems",
-  "Financial Accounting",
-  "Sports Medicine",
-  "Dental Materials",
-  "Network Security",
-  "Oral and Written Communication",
-];
-
 const CreateAnnouncement = ({ onSuccess }) => {
   const [formData, setFormData] = useState({
     title: "",
@@ -43,18 +23,66 @@ const CreateAnnouncement = ({ onSuccess }) => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
+  const [majors, setMajors] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+
   const { authUser } = useAuthStore();
+
+  // Fetch majors and subjects from the backend
+  useEffect(() => {
+    const fetchMajors = async () => {
+      try {
+        const res = await fetch("/api/announcements/majors");
+        if (res.ok) {
+          const data = await res.json();
+          setMajors(data);
+          // Set default selected value if available
+          if (data.length > 0 && formData.announcementType === "major") {
+            setFormData((prev) => ({ ...prev, targetMajor: data[0] }));
+          }
+        } else {
+          toast.error("Failed to load majors");
+        }
+      } catch (error) {
+        console.error("Error fetching majors:", error);
+        toast.error("Error fetching majors");
+      }
+    };
+
+    const fetchSubjects = async () => {
+      try {
+        const res = await fetch("/api/announcements//subjects");
+        if (res.ok) {
+          const data = await res.json();
+          setSubjects(data);
+          // Set default selected value if available
+          if (data.length > 0 && formData.announcementType === "subject") {
+            setFormData((prev) => ({ ...prev, targetSubject: data[0] }));
+          }
+        } else {
+          toast.error("Failed to load subjects");
+        }
+      } catch (error) {
+        console.error("Error fetching subjects:", error);
+        toast.error("Error fetching subjects");
+      }
+    };
+
+    fetchMajors();
+    fetchSubjects();
+  }, [formData.announcementType]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // When changing announcement type, also reset the target fields
+    // When changing announcement type, reset the target fields based on the type.
     if (name === "announcementType") {
       setFormData({
         ...formData,
         [name]: value,
-        targetMajor: value === "major" ? MAJORS[0] : null,
-        targetSubject: value === "subject" ? SUBJECTS[0] : null,
+        targetMajor: value === "major" && majors.length > 0 ? majors[0] : "",
+        targetSubject:
+          value === "subject" && subjects.length > 0 ? subjects[0] : "",
       });
     } else {
       setFormData({ ...formData, [name]: value });
@@ -211,7 +239,7 @@ const CreateAnnouncement = ({ onSuccess }) => {
             onChange={handleInputChange}
             label="Target Major"
           >
-            {MAJORS.map((major) => (
+            {majors.map((major) => (
               <MenuItem key={major} value={major}>
                 {major}
               </MenuItem>
@@ -237,7 +265,7 @@ const CreateAnnouncement = ({ onSuccess }) => {
             onChange={handleInputChange}
             label="Target Subject"
           >
-            {SUBJECTS.map((subject) => (
+            {subjects.map((subject) => (
               <MenuItem key={subject} value={subject}>
                 {subject}
               </MenuItem>

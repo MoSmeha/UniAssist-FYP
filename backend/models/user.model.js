@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
-
+import { Majors, Subjects, Departments } from "./Constants.js";
 const ScheduleSchema = new mongoose.Schema({
   day: {
     type: String,
     enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     required: true,
   },
-  subject: { type: String, required: true },
+  subject: { type: String, required: true, enum: Subjects },
   startTime: { type: String, required: true }, // e.g., "09:00 AM"
   endTime: { type: String, required: true }, // e.g., "10:30 AM"
   mode: {
@@ -31,12 +31,7 @@ const UserSchema = new mongoose.Schema(
     Department: {
       type: String,
       required: true,
-      enum: [
-        "Computer and Communications Engineering",
-        "Business",
-        "Sports Sciences",
-        "Public Health",
-      ],
+      enum: Departments,
     },
     schedule: [ScheduleSchema],
   },
@@ -47,7 +42,6 @@ const User = mongoose.model("User", UserSchema);
 
 const TeacherSchema = new mongoose.Schema({
   title: { type: String, required: true }, // e.g., "Head of Engineering"
-  coursesTaught: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
 });
 
 const Teacher = User.discriminator("teacher", TeacherSchema);
@@ -56,18 +50,15 @@ const StudentSchema = new mongoose.Schema({
   major: {
     type: String,
     required: true,
-    enum: [
-      "Computer Science",
-      "Computer Engineering",
-      "Accounting",
-      "Sports Training",
-      "Dental Lab",
-    ],
+    enum: Majors,
   },
-  department: { type: mongoose.Schema.Types.ObjectId, ref: "Department" },
-  coursesEnrolled: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
 });
 
 const Student = User.discriminator("student", StudentSchema);
 
-export { User, Teacher, Student };
+const AdminSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+});
+const Admin = User.discriminator("admin", AdminSchema);
+
+export { User, Teacher, Student, Admin };
