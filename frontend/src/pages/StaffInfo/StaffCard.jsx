@@ -32,7 +32,7 @@ const StaffCard = ({ staffMember, lastIdx }) => {
                 Email: {staffMember.email}
               </Typography>
               <Typography
-                component={"span"}
+                component={"div"}
                 variant="body2"
                 color="text.secondary"
                 sx={{ fontSize: "0.75rem" }}
@@ -40,7 +40,7 @@ const StaffCard = ({ staffMember, lastIdx }) => {
                 Department: {staffMember.Department}
               </Typography>
               <Typography
-                component={"span"}
+                component={"div"}
                 variant="body2"
                 color="text.secondary"
                 sx={{ fontSize: "0.75rem" }}
@@ -48,7 +48,7 @@ const StaffCard = ({ staffMember, lastIdx }) => {
                 Role: {staffMember.title}
               </Typography>
               <Typography
-                component={"span"}
+                component={"div"}
                 variant="body2"
                 color="text.secondary"
                 sx={{ fontSize: "0.75rem" }}
