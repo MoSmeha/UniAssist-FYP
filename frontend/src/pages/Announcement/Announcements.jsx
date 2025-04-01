@@ -20,7 +20,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CloseIcon from "@mui/icons-material/Close";
 import CreateAnnouncement from "./CreateAnnouncement";
-import { useAuthStore } from "./zustand/AuthStore";
+import { useAuthStore } from "../../zustand/AuthStore";
 import toast from "react-hot-toast";
 
 const Announcements = () => {

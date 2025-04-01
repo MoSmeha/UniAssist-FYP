@@ -9,7 +9,7 @@ import {
   Box,
   FormHelperText,
 } from "@mui/material";
-import { useAuthStore } from "./zustand/AuthStore";
+import { useAuthStore } from "../../zustand/AuthStore";
 import toast from "react-hot-toast";
 
 const CreateAnnouncement = ({ onSuccess }) => {
@@ -51,7 +51,7 @@ const CreateAnnouncement = ({ onSuccess }) => {
 
     const fetchSubjects = async () => {
       try {
-        const res = await fetch("/api/announcements//subjects");
+        const res = await fetch("/api/announcements/subjects");
         if (res.ok) {
           const data = await res.json();
           setSubjects(data);

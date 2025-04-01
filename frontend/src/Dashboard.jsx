@@ -26,11 +26,13 @@ import useLogout from "./hooks/useLogout";
 import ChatApp from "./pages/ChatApp/ChatApp";
 import SignUp from "../src/pages/signup/SignUp";
 import ScheduleTable from "./pages/Schedule/ScheduleComponent";
-import TODO from "./TodoList";
+import TODO from "./pages/TodoList/TodoList";
 import StaffList from "./pages/StaffInfo/StaffList";
 import CampaignIcon from "@mui/icons-material/Campaign";
-import Announcements from "./Announcements";
+import Announcements from "./pages/Announcement/Announcements";
 
+import SmartToyIcon from "@mui/icons-material/SmartToy";
+import ChatbotFrontend from "./Chatbot";
 // const NAVIGATION = [
 //   {
 //     kind: "header",
@@ -117,6 +119,7 @@ const routes = {
   "/Schedule": <ScheduleTable />,
   "/tools/checkList": <TODO />,
   "/announcements": <Announcements />,
+  "/tools/AIBot": <ChatbotFrontend />,
 
   // Add Announcements route
 };
@@ -251,6 +254,11 @@ function DashboardLayoutBasic(props) {
             segment: "checkList",
             title: "checkList",
             icon: <ChecklistIcon />,
+          },
+          {
+            segment: "AIBot",
+            title: "Ai chatBot",
+            icon: <SmartToyIcon />,
           },
         ],
       },
