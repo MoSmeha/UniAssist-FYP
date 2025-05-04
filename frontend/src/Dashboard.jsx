@@ -16,7 +16,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import * as React from "react";
 import AnnouncementIcon from "@mui/icons-material/Announcement"; // Added for Announcements
-import NotificationsIcon from "@mui/icons-material/Notifications";
+
 import { AccountPreview } from "@toolpad/core/Account";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
@@ -30,9 +30,15 @@ import TODO from "./pages/TodoList/TodoList";
 import StaffList from "./pages/StaffInfo/StaffList";
 import CampaignIcon from "@mui/icons-material/Campaign";
 import Announcements from "./pages/Announcement/Announcements";
+import BookOnlineIcon from '@mui/icons-material/BookOnline';
 
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 import ChatbotFrontend from "./Chatbot";
+
+import NotificationTool from "./pages/tools/NotificationTool";
+import AppointmentBooking from "./pages/tools/AppointmentBooking";
+
+import CircleNotificationsOutlinedIcon from '@mui/icons-material/CircleNotificationsOutlined';
 // const NAVIGATION = [
 //   {
 //     kind: "header",
@@ -120,6 +126,8 @@ const routes = {
   "/tools/checkList": <TODO />,
   "/announcements": <Announcements />,
   "/tools/AIBot": <ChatbotFrontend />,
+  "/tools/Appointment": <AppointmentBooking />,
+  "/tools/NotificationTool": <NotificationTool />,
 
   // Add Announcements route
 };
@@ -259,6 +267,16 @@ function DashboardLayoutBasic(props) {
             segment: "AIBot",
             title: "Ai chatBot",
             icon: <SmartToyIcon />,
+          },
+          {
+            segment: "Appointment",
+            title: "Apointment Booking",
+            icon: <BookOnlineIcon />,
+          },
+          {
+            segment: "NotificationTool",
+            title: "Notification Tool",
+            icon: <CircleNotificationsOutlinedIcon />,
           },
         ],
       },
