@@ -15,7 +15,7 @@ export const chatbot = async (req, res) => {
 
     const prompt = req.params.prompt;
     const prompt1 = myprompt + prompt;
-
+    
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       store: true,

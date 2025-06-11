@@ -159,7 +159,7 @@ export const deleteTodo = async (req, res) => {
 
     // Optional: Could add a notification for deletion if needed
     // Optional: Delete related notifications
-    // await Notification.deleteMany({ relatedId: todo._id });
+     await Notification.deleteMany({ relatedId: todo._id });
 
     res.json({ message: "Deleted successfully." });
   } catch (error) {
